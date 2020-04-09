@@ -1,0 +1,1 @@
+%HOMEPATH%\.virtualenvs\djangodev\Scripts\activate.bat

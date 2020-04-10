@@ -36,3 +36,19 @@ jobs:
         working-directory: ./frontend
         env:
           CI: true
+      - name: Deploy UI to Heroku
+        if: github.rer == 'master'
+        uses: AkhileshNS/heroku-deploy@v3.0.2
+        with:
+          # This will be used for authentication. You can find it in your heroku homepage account settings
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          # Email that you use with heroku
+          heroku_email: advisor.ireland.web@gmail.com
+          # The appname to use for deploying/updating
+          heroku_app_name: advisor-ui-ie
+          # An optional buildpack to use when creating the heroku application
+          buildpack: https://github.com/heroku/heroku-buildpack-multi-procfile
+          # The branch that you would like to deploy to Heroku
+          branch: HEAD       
+          # Set if your app is located in a subdirectory.
+          appdir: frontend

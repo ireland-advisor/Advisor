@@ -37,7 +37,7 @@ jobs:
         env:
           CI: true
       - name: Deploy UI to Heroku
-        if: github.rer == 'master'
+        if: github.ref == 'master'
         uses: AkhileshNS/heroku-deploy@v3.0.2
         with:
           # This will be used for authentication. You can find it in your heroku homepage account settings
@@ -49,6 +49,6 @@ jobs:
           # An optional buildpack to use when creating the heroku application
           buildpack: https://github.com/mars/create-react-app-buildpack.git
           # The branch that you would like to deploy to Heroku
-          branch: HEAD       
+          branch: HEAD
           # Set if your app is located in a subdirectory.
           appdir: frontend

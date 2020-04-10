@@ -47,7 +47,7 @@ jobs:
           # The appname to use for deploying/updating
           heroku_app_name: advisor-ui-ie
           # An optional buildpack to use when creating the heroku application
-          buildpack: https://github.com/heroku/heroku-buildpack-multi-procfile
+          buildpack: https://github.com/mars/create-react-app-buildpack.git
           # The branch that you would like to deploy to Heroku
           branch: HEAD       
           # Set if your app is located in a subdirectory.

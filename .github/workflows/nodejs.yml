@@ -1,0 +1,52 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - master
+      - feature/*
+    paths:
+      - frontend/**
+  pull_request:
+    branches:
+      - master
+    paths:
+      - frontend/**
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+        working-directory: ./frontend
+      - run: npm test
+        working-directory: ./frontend
+        env:
+          CI: true
+      - name: Deploy UI to Heroku
+        # if: github.ref == 'master'
+        uses: AkhileshNS/heroku-deploy@v3.0.2
+        with:
+          # This will be used for authentication. You can find it in your heroku homepage account settings
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          # Email that you use with heroku
+          heroku_email: advisor.ireland.web@gmail.com
+          # The appname to use for deploying/updating
+          heroku_app_name: advisor-ui-ie
+          # An optional buildpack to use when creating the heroku application
+          buildpack: https://github.com/mars/create-react-app-buildpack.git
+          # Set if your app is located in a subdirectory.
+          appdir: frontend

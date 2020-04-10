@@ -9,12 +9,12 @@ on:
       - master
       - feature/*
     paths:
-      - frontend/*
+      - frontend/**
   pull_request:
     branches:
       - master
     paths:
-      - frontend/*
+      - frontend/**
 
 jobs:
   build:

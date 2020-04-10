@@ -6,12 +6,12 @@ on:
       - master
       - feature/*
     paths:
-      - backend/*
+      - backend/**
   pull_request:
     branches:
       - master
     paths:
-      - backend/*
+      - backend/**
 
 jobs:
   build:

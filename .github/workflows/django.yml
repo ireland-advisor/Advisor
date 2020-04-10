@@ -49,6 +49,6 @@ jobs:
           # An optional buildpack to use when creating the heroku application
           buildpack: https://github.com/heroku/heroku-buildpack-multi-procfile
           # The branch that you would like to deploy to Heroku
-          branch: HEAD
+          branch: 'refs/heads/master'
           # Set if your app is located in a subdirectory.
           appdir: backend

@@ -1,0 +1,12 @@
+language: python
+python:
+  - 3.8
+deploy:
+  provider: heroku
+  api_key:
+    secure: lLFd7mMDBWM9QA8SBCKaGmDHoOm6yRcsf3D/KidpAiAcHYecDXwlegEsVXX8Mm/r4SD7yt295dKmmMMWrSEPS8tpLDFtehA/MaO4ljyK7Y6FVwmf6LuEYE4QuOrCCg7CVRonOXhwx/YRSxnAY8FOn/bUfBCk+m6D//qSL1xUrHyhd+Vlt0JrhiF5+KBPjlV1vg0qhsZ0N2ihbBqFxjUr1bO9O/o81HXzChwKukxEPpV8gB0lJK7fYXRRh2pldiKno0/SLbvzdUrP7Ce7xJ2bncEt7xsmKZcePa8NIhN9Y5bIAcoPzh9ml8dq15TMwHu6Yi7i+AnUNqf3cEnp/mWVA5rNwsto9FGN47uKfVvfSRyDkvab0doqAqTGWok3cXa/Gr5kdd/2EqIoLYyvQc+u3MKk7Kw9VkSnB3fJPD4+Cm5n3+3PSXLa29eEvTGRu1VxmC8KwJf07cRtkQwMOcyxg8uLrq0F53yoHuvZM2ADr8rzABTtlKpqXdoPSOqoCEpXKAHNVzwRxik/tjLLkGN1wMVFLE8ojMwzPQBExZuXcIwpBBQxCKvnFycFpk6Dk2iLLRhX7x4C9xzLuIpoyBMFr+IbEqaeZypXDWSq/74CDOguykVOOF0Ac0vZyV8MSREy8BATSe7Y0/1IAefLdTUTU39tAeu86OIT7I1SFFDujWw=
+  app: my-app-123
+  on:
+    branch: staging
+after_success:
+  - pip freeze

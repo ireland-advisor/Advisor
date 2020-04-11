@@ -8,5 +8,3 @@ deploy:
   app: advisor-api
   on:
     branch: feature/travis
-after_success:
-  - pip freeze

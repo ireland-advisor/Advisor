@@ -1,1 +1,1 @@
-web: gunicorn advisor_api.wsgi --log-file
+web: gunicorn advisor_api.wsgi

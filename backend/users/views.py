@@ -10,6 +10,7 @@ from rest_framework import viewsets
 from rest_framework import permissions
 from users.serializers import UserSerializer, GroupSerializer
 
+
 class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
@@ -26,89 +27,99 @@ class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticated]
-@csrf_exempt
-def mentor_list(request):
-    """
-    List all code mentors, or create a new mentor.
-    """
-    if request.method == 'GET':
-        mentors = Mentor.objects.all()
-        serializer = MentorSerializer(mentors, many=True)
-        return JsonResponse(serializer.data, safe=False)
 
-    elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = MentorSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
 
-@csrf_exempt
-def mentor_detail(request, pk):
-    """
-    Retrieve, update or delete a code mentor.
-    """
-    try:
-        mentor = Mentor.objects.get(pk=pk)
-    except Mentor.DoesNotExist:
-        return HttpResponse(status=404)
+class MentorViewSet(viewsets.ModelViewSet):
+    queryset = Mentor.objects.all()
+    serializer_class = MentorSerializer
 
-    if request.method == 'GET':
-        serializer = MentorSerializer(mentor)
-        return JsonResponse(serializer.data)
+    @csrf_exempt
+    def mentor_list(self, request):
+        """
+        List all code mentors, or create a new mentor.
+        """
+        if request.method == 'GET':
+            mentors = Mentor.objects.all()
+            serializer = MentorSerializer(mentors, many=True)
+            return JsonResponse(serializer.data, safe=False)
 
-    elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        serializer = MentorSerializer(mentor, data=data)
-        if serializer.is_valid():
-            serializer.save()
+        elif request.method == 'POST':
+            data = JSONParser().parse(request)
+            serializer = MentorSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse(serializer.data, status=201)
+            return JsonResponse(serializer.errors, status=400)
+
+    @csrf_exempt
+    def mentor_detail(self, request, pk):
+        """
+        Retrieve, update or delete a code mentor.
+        """
+        try:
+            mentor = Mentor.objects.get(pk=pk)
+        except Mentor.DoesNotExist:
+            return HttpResponse(status=404)
+
+        if request.method == 'GET':
+            serializer = MentorSerializer(mentor)
             return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=400)
 
-    elif request.method == 'DELETE':
-        mentor.delete()
+        elif request.method == 'PUT':
+            data = JSONParser().parse(request)
+            serializer = MentorSerializer(mentor, data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse(serializer.data)
+            return JsonResponse(serializer.errors, status=400)
 
-@csrf_exempt
-def seeker_list(request):
-    """
-    List all code seekers, or create a new seeker.
-    """
-    if request.method == 'GET':
-        seekers = Seeker.objects.all()
-        serializer = SeekerSerializer(seekers, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        elif request.method == 'DELETE':
+            mentor.delete()
 
-    elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = SeekerSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
 
-@csrf_exempt
-def seeker_detail(request, pk):
-    """
-    Retrieve, update or delete a code seeker.
-    """
-    try:
-        seeker = Seeker.objects.get(pk=pk)
-    except Mentor.DoesNotExist:
-        return HttpResponse(status=404)
+class SeekerViewSet(viewsets.ModelViewSet):
+    queryset = Seeker.objects.all()
+    serializer_class = SeekerSerializer
 
-    if request.method == 'GET':
-        serializer = SeekerSerializer(seeker)
-        return JsonResponse(serializer.data)
+    @csrf_exempt
+    def seeker_list(self, request):
+        """
+        List all code seekers, or create a new seeker.
+        """
+        if request.method == 'GET':
+            seekers = Seeker.objects.all()
+            serializer = SeekerSerializer(seekers, many=True)
+            return JsonResponse(serializer.data, safe=False)
 
-    elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        serializer = SeekerSerializer(seeker, data=data)
-        if serializer.is_valid():
-            serializer.save()
+        elif request.method == 'POST':
+            data = JSONParser().parse(request)
+            serializer = SeekerSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse(serializer.data, status=201)
+            return JsonResponse(serializer.errors, status=400)
+
+    @csrf_exempt
+    def seeker_detail(self, request, pk):
+        """
+        Retrieve, update or delete a code seeker.
+        """
+        try:
+            seeker = Seeker.objects.get(pk=pk)
+        except Mentor.DoesNotExist:
+            return HttpResponse(status=404)
+
+        if request.method == 'GET':
+            serializer = SeekerSerializer(seeker)
             return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=400)
 
-    elif request.method == 'DELETE':
-        seeker.delete()
+        elif request.method == 'PUT':
+            data = JSONParser().parse(request)
+            serializer = SeekerSerializer(seeker, data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse(serializer.data)
+            return JsonResponse(serializer.errors, status=400)
 
+        elif request.method == 'DELETE':
+            seeker.delete()

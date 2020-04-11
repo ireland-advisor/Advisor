@@ -30,13 +30,3 @@ jobs:
       - name: Run Tests
         run: |
           python manage.py test
-      - name: Deploy API to Heroku
-        if: github.ref == 'refs/heads/master'
-        uses: AkhileshNS/heroku-deploy@v3.0.2
-        with:
-          # This will be used for authentication. You can find it in your heroku homepage account settings
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          # Email that you use with heroku
-          heroku_email: advisor.ireland.web@gmail.com
-          # The appname to use for deploying/updating
-          heroku_app_name: advisor-api

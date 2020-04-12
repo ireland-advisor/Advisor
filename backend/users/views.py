@@ -9,6 +9,7 @@ from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from rest_framework import permissions
 from users.serializers import UserSerializer, GroupSerializer
+from django.http import QueryDict
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -80,6 +81,9 @@ class MentorViewSet(viewsets.ModelViewSet):
 class SeekerViewSet(viewsets.ModelViewSet):
     queryset = Seeker.objects.all()
     serializer_class = SeekerSerializer
+
+
+
 
     @csrf_exempt
     def seeker_list(self, request):

@@ -17,11 +17,11 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 class MentorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Mentor
-        fields = ['name','gender','title','des','expertiseFields','isAvailable','language']
+        fields = ['name','gender','title','des','expertiseFields','isAvailable']
 
 
 class SeekerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Seeker
-        fields = ['name','gender','title','des','seekingFields','language']
+        fields = ['name','gender','title','des','seekingFields']
 

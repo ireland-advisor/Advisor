@@ -1,12 +1,13 @@
 language: python
 python:
-- 3.8
+  - 3.8
 script:
-- python manage.py test
+  - python manage.py test
 deploy:
-  provider: heroku
-  api_key:
-    secure: Evb6mK31hLkYYBQb9wP9aPHcuR31e9hOV/qgkEVZN0mDSoXxPFxEjj9EB1xFrmYVUl+voHKGp/z2oNdycKdh/KMUPNu4eYNFXtgNd+sAo5kzxVrRVA0F0I6ulxALnHiTXK5Stm1aX8anse25N3qmhbn+KXil0J8c3yLHl1QYuGD+71P5th+0P2mgwFc+eebpA8qMKj1g5GHsqwEWK0ZSBLSn/GI02Obs2T39o6zU/R/JTHQkDmCmOwtRft1P4YEvU4QVGjNbOrjYavlmW2VT0xI4pyjRobiFVfY/EnZWJHTerWFEK6OnlNcyojCMMcZLh7NF80elXqV48KQ8Sza1O4gmGoOiNti6fsRgWgknfzNtdPYG7//xB8GKAOZV4QqYw23ES3qkoLTarOXUiH/yUQnAGKvHLqCdof4yUSpwe5cl4sK9lQTlOBb+k7Gm81c+r+F7nOxy/KdTFJx6zO+d4iCztBX2nQtM7BfzYVLQ3IRzjwM2xOLbZGInJ0tqyKHVBRIAtwyTDvNusbLCA+Ahy2cf8GaXjY70DS5rqTbDZhlGn39OLIyWlkpZ/psEvv4tQaYjrBtl/TjdbELze/zZoO27MfVTCnTj1K0SOe+VXIWpmvoL8yHRCQ02KnmG3APL1l0qZfDctzw11VObS3HM5YtHwHT+gziUGM776al+lSg=
+  provider: heroku:git
+  username: advisor.ireland.web@gmail.com
+  password:
+    secure: kZ4gIxyFcSVmWudiTrkg6mfIMsILB3PThfnvsLfPMVlaVAAX7vYVAWRsrcgOeuHG0XbC5cIn3uj23aEYQi/WA1q1axle9qnx1GonSB5DIZKQwt6ZYZs5kPJjLx4M4nnW2P8DOkmoZXoDN/QKYMo3okbc2g/CS0CkidJT8oZLC6s2L/pMh6qPoP/OYlb+cjflWj/C87YSGq7LubKM/QJlspn9VcjCO5QNVyKJELNZ/URjcm66NDzYgM1aSOo3IT7dJszJFYC+96JXeiyQwXqzF7Md7IKyIIfkeNMU3ncUOu7y3kB5lIK7LZG5oJAGJINyNBI4L/6ofNNL5TUK9XKZuSfU9yMZLmHbF58oZKURqUC16Nkd842QCFSQ4wqIVXXLJrSIAWyJifePEYscvpMfg7woKC1RUpkp9jhBf+ibq2LLkizO2iHF4h1VLTrw0V3xyL+dGw8gYiWH6K4oHw4NnveKitSKhXNOIFekUrEWRKvSuDoC896uZx8O7mFekQS5+gWWbiEVSRHMkKjGcKJVaX262VEe/xGvW/WSmnNx2pC2okiPwGYx/5wo1PtAIU2SvQFNiKQiWEsPwSG2cb5KUaiqUXGq0WGJfZAo7jP1yfVgGGwnUXXVlofK3arIR3MhkHsUXbvid5z9/QD/qfEPFMriTbZRb8Yif1goQdhZ4xE=
   app: advisor-api
   on:
     branch: feature/travis

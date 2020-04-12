@@ -11,3 +11,4 @@ deploy:
   app: advisor-api
   on:
     branch: feature/travis
+  edge: true

@@ -1,4 +1,4 @@
-#!/Users/qili/Desktop/Advisor/backend/env/bin/python3
+#!/Users/qili/Desktop/Advisor/env/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

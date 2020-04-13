@@ -1,0 +1,1 @@
+web: gunicorn advisor_api.wsgi

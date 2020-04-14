@@ -78,6 +78,7 @@ target/
 
 # pyenv
 .python-version
+.env/
 
 # pipenv
 #   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
@@ -198,6 +199,7 @@ fabric.properties
 # .idea/misc.xml
 # *.ipr
 
+.idea/
 # Sonarlint plugin
 .idea/**/sonarlint/
 

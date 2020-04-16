@@ -52,5 +52,6 @@ urlpatterns = [
    # routers url
    path('', include(router.urls)),
    # admin site
-   path('admin/', admin.site.urls)
+   path('admin/', admin.site.urls),
+   url(r'^', include('oauth.urls'))
 ]

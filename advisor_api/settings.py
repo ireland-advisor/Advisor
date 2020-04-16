@@ -12,9 +12,11 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
+# import markdown
+# print('Markdown module path', markdown.__file__)
+# print('Markdown version:', markdown.version)
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
@@ -24,7 +26,15 @@ SECRET_KEY = '_c6@oi7yioddo-0mz!=yenzso0!@8-q%qa1-x*5sn^*gx^@m8i'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['advisor-api.herokuapp.com','127.0.0.1']
+ALLOWED_HOSTS = ['advisor-api.herokuapp.com', '127.0.0.1', 'localhost']
+
+# Okta Configuration
+ORG_URL = "https://dev-192131.okta.com"
+ISSUER = "https://dev-192131.okta.com/oauth2/default"
+CLIENT_ID = "0oa967awncYBzmmsG4x6"
+CLIENT_SECRET = "FxrXdp5YBUdPdp3wyaE3Z6NMGMBGXGJN9S3UL1CU"
+SCOPES = "openid profile email"
+REDIRECT_URI = "http://localhost:8000/oauth2/callback"
 
 # Application definition
 
@@ -38,6 +48,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'users.apps.UsersConfig',
+    "oauth"
 ]
 
 REST_FRAMEWORK = {

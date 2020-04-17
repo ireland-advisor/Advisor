@@ -1,0 +1,18 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+django = "*"
+rest-framework = "*"
+djangorestframework = "*"
+drf-yasg = "*"
+pygments = "*"
+pyjwt = "*"
+python-jose = "*"
+
+[requires]
+python_version = "3.8"

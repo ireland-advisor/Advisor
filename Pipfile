@@ -13,6 +13,7 @@ drf-yasg = "*"
 pygments = "*"
 pyjwt = "*"
 python-jose = "*"
+django-extensions = "*"
 
 [requires]
 python_version = "3.8"

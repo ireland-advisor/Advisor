@@ -18,7 +18,7 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
 
 class GroupViewSet(viewsets.ModelViewSet):
@@ -27,7 +27,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
 
 class MentorViewSet(viewsets.ModelViewSet):
@@ -82,9 +82,6 @@ class SeekerViewSet(viewsets.ModelViewSet):
     queryset = Seeker.objects.all()
     serializer_class = SeekerSerializer
 
-
-
-
     @csrf_exempt
     def seeker_list(self, request):
         """
@@ -110,7 +107,7 @@ class SeekerViewSet(viewsets.ModelViewSet):
         """
         try:
             seeker = Seeker.objects.get(pk=pk)
-        except Mentor.DoesNotExist:
+        except Seeker.DoesNotExist:
             return HttpResponse(status=404)
 
         if request.method == 'GET':

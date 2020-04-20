@@ -14,8 +14,7 @@ from .tokens import TokenValidator
 # from .oauth_openid import call_userinfo_endpoint, call_introspect, call_revocation
 
 
-# Create your views here.
-# GLOBALS
+
 config = Config()
 token_manager = TokenManager()
 
@@ -38,6 +37,7 @@ def get_context(request):
         context['revocation'] = request.session['revocation']
 
     return context
+
 
 def login_controller(request):
     okta_config = {
@@ -81,16 +81,16 @@ def callback_controller(request):
     if request.POST:
         return HttpResponse({'error': 'Endpoint not supported'})
     else:
-        code = request.GET['code']
-        state = request.GET['state']
-
+        code = request.GET.get('code', '')
+        state = request.GET.get('state', '')
+        print("i'm here")
         # Get state and nonce from cookie
         cookie_state = request.COOKIES["okta-oauth-state"]
         cookie_nonce = request.COOKIES["okta-oauth-nonce"]
 
         # Verify state
         if state != cookie_state:
-            raise Exception("Value {} does not match the assigned state".format(state))
+            # raise Exception("Value {} does not match the assigned state".format(state))
             return HttpResponseRedirect(reverse('login_controller'))
 
         user, token_manager_json = _token_request(code, cookie_nonce)

@@ -5,10 +5,7 @@ from pygments.styles import get_all_styles
 LEXERS = [item for item in get_all_lexers() if item[1]]
 LANGUAGE_CHOICES = sorted([(item[1][0], item[0]) for item in LEXERS])
 STYLE_CHOICES = sorted([(item, item) for item in get_all_styles()])
-GENDER_CHOICES = (
-    ("0", u"male"),
-    ("1", u"female")
-)
+GENDER_CHOICES = (("0", "male"), ("1", "female"))
 
 
 class UserBase(models.Model):
@@ -32,7 +29,7 @@ class UserBase(models.Model):
 
 
 class Mentor(UserBase):
-    expertiseFields = models.TextField()
+    expertiseFields = models.TextField(default='non')
     isAvailable = models.BooleanField(default=False)
 
     class Meta:
@@ -41,7 +38,7 @@ class Mentor(UserBase):
 
 
 class Seeker(UserBase):
-    seekingFields = models.TextField(blank=True)
+    seekingFields = models.TextField(default='non')
 
     class Meta:
         verbose_name = "seeker information"

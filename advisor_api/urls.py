@@ -25,7 +25,7 @@ from users import views
 
 schema_view = get_schema_view(
    openapi.Info(
-      title="Snippets API",
+      title="Advisor API",
       default_version='v1',
       description="Test description",
       terms_of_service="https://www.google.com/policies/terms/",
@@ -44,6 +44,7 @@ router.register(r'groups', views.GroupViewSet)
 router.register(r'mentors', views.MentorViewSet, basename='mentors')
 router.register(r'seekers', views.SeekerViewSet, basename='seekers')
 
+# r'^seekers/(?P<seekers_id>\d+)/$'
 urlpatterns = [
    # api documentation
    url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
@@ -53,5 +54,6 @@ urlpatterns = [
    path('', include(router.urls)),
    # admin site
    path('admin/', admin.site.urls),
+   # authentication site
    url(r'^', include('oauth.urls'))
 ]

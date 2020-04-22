@@ -24,17 +24,17 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '_c6@oi7yioddo-0mz!=yenzso0!@8-q%qa1-x*5sn^*gx^@m8i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['advisor-api.herokuapp.com', '127.0.0.1', 'localhost']
 
 # Okta Configuration
-ORG_URL = "https://dev-192131.okta.com"
-ISSUER = "https://dev-192131.okta.com/oauth2/default"
-CLIENT_ID = "0oa967awncYBzmmsG4x6"
-CLIENT_SECRET = "FxrXdp5YBUdPdp3wyaE3Z6NMGMBGXGJN9S3UL1CU"
-SCOPES = "openid profile email"
-REDIRECT_URI = "http://localhost:8000/oauth2/callback"
+ORG_URL = os.environ.get("ORG_URL")
+ISSUER = os.environ.get("ISSUER")
+CLIENT_ID = os.environ.get("CLIENT_ID")
+CLIENT_SECRET = os.environ.get("CLIENT_SECRET")
+SCOPES = os.environ.get("SCOPES")
+REDIRECT_URI = os.environ.get("REDIRECT_URI")
 
 # Application definition
 
@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'users.apps.UsersConfig',
     "oauth",
-    # "django_extensions"
+    "django_extensions"
 ]
 
 REST_FRAMEWORK = {

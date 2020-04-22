@@ -12,9 +12,6 @@ from .decorators import okta_login_required
 import json
 from .tokens import TokenValidator
 # from .oauth_openid import call_userinfo_endpoint, call_introspect, call_revocation
-
-
-
 config = Config()
 token_manager = TokenManager()
 

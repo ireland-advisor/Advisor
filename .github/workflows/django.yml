@@ -27,4 +27,5 @@ jobs:
         uses: dschep/install-pipenv-action@v1
       - name: Run Tests
         run: |
+          pipenv install
           python manage.py test

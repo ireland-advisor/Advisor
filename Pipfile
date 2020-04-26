@@ -7,7 +7,6 @@ verify_ssl = true
 
 [packages]
 django = "*"
-rest-framework = "*"
 djangorestframework = "*"
 drf-yasg = "*"
 pygments = "*"
@@ -15,6 +14,7 @@ pyjwt = "*"
 python-jose = "*"
 django-extensions = "*"
 python-decouple = "*"
+okta = "*"
 
 [requires]
 python_version = "3.8"

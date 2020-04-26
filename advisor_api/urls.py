@@ -44,7 +44,6 @@ router.register(r'groups', views.GroupViewSet)
 router.register(r'mentors', views.MentorViewSet, basename='mentors')
 router.register(r'seekers', views.SeekerViewSet, basename='seekers')
 
-# r'^seekers/(?P<seekers_id>\d+)/$'
 urlpatterns = [
    # api documentation
    url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),

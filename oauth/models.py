@@ -18,6 +18,34 @@ class Config:
     token = settings.TOKEN
 
 
+class TokenManager:
+    def __init__(self):
+        self.idToken = None
+        self.accessToken = None
+        self.claims = None
+
+    def set_id_token(self, token):
+        self.idToken = token
+
+    def set_access_token(self, token):
+        self.accessToken = token
+
+    def set_claims(self, claims):
+        self.claims = claims
+
+    def getJson(self):
+        response = {}
+        if self.idToken:
+            response['idToken'] = self.idToken
+
+        if self.accessToken:
+            response['accessToken'] = self.accessToken
+
+        if self.claims:
+            response['claims'] = self.claims
+        return response
+
+
 class Advisor(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     user_name = models.CharField(max_length=30, unique=False, default='')

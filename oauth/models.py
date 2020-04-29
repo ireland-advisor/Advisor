@@ -1,16 +1,8 @@
+
+from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.conf import settings
-import requests
-
-# Create your models here.
-class DiscoveryDocument:
-    # Find the OIDC metadata through discovery
-    def __init__(self, issuer_uri):
-        r = requests.get(issuer_uri + "/.well-known/openid-configuration")
-        self.json = r.json()
-
-    def getJson(self):
-        return self.json
 
 
 class Config:
@@ -24,6 +16,7 @@ class Config:
     issuer = settings.ISSUER
     scopes = settings.SCOPES
     redirect_uri = settings.REDIRECT_URI
+    token = settings.TOKEN
 
 class TokenManager:
     def __init__(self):
@@ -51,3 +44,16 @@ class TokenManager:
         if self.claims:
             response['claims'] = self.claims
         return response
+
+
+class Advisor(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    user_name = models.CharField(max_length=30, unique=False, default='')
+    first_name = models.CharField(max_length=20, blank=True, default='')
+    last_name = models.CharField(max_length=20, blank=True, default='')
+    email = models.CharField(max_length=20, unique=True, default='')
+
+
+    class Meta:
+        verbose_name = "advisor information"
+        verbose_name_plural = verbose_name

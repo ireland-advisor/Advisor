@@ -1,4 +1,5 @@
-from django.http import HttpResponseRedirect, HttpResponse
+
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 
 
@@ -10,7 +11,11 @@ def okta_login_required(func):
                 response.status_code = 401
                 return response
             else:
-                return HttpResponseRedirect(reverse('login_controller'))
+                return JsonResponse({
+                     "status": False,
+                     "message": "please login"
+                })
         else:
             return func(request, *args, **kw)
+
     return wrapper

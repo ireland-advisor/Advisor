@@ -15,6 +15,7 @@ python-jose = "*"
 django-extensions = "*"
 python-decouple = "*"
 gunicorn = "*"
+okta = "*"
 
 [requires]
 python_version = "3.8"

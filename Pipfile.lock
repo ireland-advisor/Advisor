@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "c1b1f2abc739fc4b8896cd9a1ba15d35a8c00061c95495d39ba11b8136c8650d"
+            "sha256": "c479e065eea6e1c6fc58bdf92060e457b442da06cd6d5dc56c5d0bc95175bb0d"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -164,6 +164,14 @@
             ],
             "version": "==1.1.1"
         },
+
+        "okta": {
+            "hashes": [
+                "sha256:53e792c68d3684ff4140b4cb1c02af3821090368f8110fde54c0bdb638449332"
+            ],
+            "index": "pypi",
+            "version": "==0.0.4"
+        },
         "packaging": {
             "hashes": [
                 "sha256:3c292b474fda1671ec57d46d739d072bfd495a4f51ad01a055121d81e952b7a3",
@@ -200,6 +208,14 @@
                 "sha256:ef9d7589ef3c200abe66653d3f1ab1033c3c419ae9b9bdb1240a85b024efc88b"
             ],
             "version": "==2.4.7"
+        },
+
+        "python-dateutil": {
+            "hashes": [
+                "sha256:73ebfe9dbf22e832286dafa60473e4cd239f8592f699aa5adaf10050e6e1823c",
+                "sha256:75bb3f31ea686f1197762692a9ee6a7550b59fc6ca3a1f4b5d7e32fb98e2da2a"
+            ],
+            "version": "==2.8.1"
         },
         "python-decouple": {
             "hashes": [

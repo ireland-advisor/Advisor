@@ -37,12 +37,9 @@ schema_view = get_schema_view(
 )
 
 router = routers.DefaultRouter()
-# users
-router.register(r'users', views.UserViewSet)
-router.register(r'groups', views.GroupViewSet)
+
 # characters
-router.register(r'mentors', views.MentorViewSet, basename='mentors')
-router.register(r'seekers', views.SeekerViewSet, basename='seekers')
+router.register(r'advisors', views.AdvisorViewSet, basename='advisors')
 
 urlpatterns = [
    # api documentation
@@ -54,5 +51,5 @@ urlpatterns = [
    # admin site
    path('admin/', admin.site.urls),
    # authentication site
-   url(r'^', include('oauth.urls'))
+   url(r'^register', views.register, name='register')
 ]

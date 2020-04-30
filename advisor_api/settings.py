@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '_c6@oi7yioddo-0mz!=yenzso0!@8-q%qa1-x*5sn^*gx^@m8i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['advisor-api.herokuapp.com', '127.0.0.1', 'localhost']
 
@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'users.apps.UsersConfig',
-    "oauth",
     "django_extensions"
 ]
 

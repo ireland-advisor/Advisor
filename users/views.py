@@ -1,74 +1,59 @@
 # Create your views here.
-from django.http import HttpResponse, JsonResponse
+from django.contrib.auth import login
+from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
-from users.models import Mentor
-from users.models import Seeker
-from users.serializers import MentorSerializer, SeekerSerializer
-from django.contrib.auth.models import User, Group
+from users.models import Advisor, Users
+from users.serializers import AdvisorSerializer, CreateUserSerializer
+from django.contrib.auth.models import User
 from rest_framework import viewsets
-from rest_framework import permissions
-from users.serializers import UserSerializer, GroupSerializer
-from django.http import QueryDict
+from django.http import JsonResponse
+from drf_yasg.utils import swagger_auto_schema
+from okta.models.user import User
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from okta import UsersClient
+from .models import Config
+
+config = Config()
 
 
-class UserViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
-    queryset = User.objects.all().order_by('-date_joined')
-    serializer_class = UserSerializer
-    # permission_classes = [permissions.IsAuthenticated]
-
-
-class GroupViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows groups to be viewed or edited.
-    """
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-    # permission_classes = [permissions.IsAuthenticated]
-
-
-class MentorViewSet(viewsets.ModelViewSet):
-    queryset = Mentor.objects.all()
-    serializer_class = MentorSerializer
+class AdvisorViewSet(viewsets.ModelViewSet):
+    queryset = Advisor.objects.all()
+    serializer_class = AdvisorSerializer
 
     @csrf_exempt
-    def mentor_list(self, request):
-        """
-        List all code mentors, or create a new mentor.
-        """
+    def advisor_list(self, request):
         if request.method == 'GET':
-            mentors = Mentor.objects.all()
-            serializer = MentorSerializer(mentors, many=True)
+            mentors = Advisor.objects.all()
+            serializer = AdvisorSerializer(mentors, many=True)
             return JsonResponse(serializer.data, safe=False)
 
         elif request.method == 'POST':
             data = JSONParser().parse(request)
-            serializer = MentorSerializer(data=data)
+            serializer = AdvisorSerializer(data=data)
             if serializer.is_valid():
                 serializer.save()
                 return JsonResponse(serializer.data, status=201)
             return JsonResponse(serializer.errors, status=400)
 
     @csrf_exempt
-    def mentor_detail(self, request, pk):
+    def advisor_detail(self, request, pk):
         """
         Retrieve, update or delete a code mentor.
         """
         try:
-            mentor = Mentor.objects.get(pk=pk)
-        except Mentor.DoesNotExist:
+            mentor = Advisor.objects.get(pk=pk)
+        except Advisor.DoesNotExist:
             return HttpResponse(status=404)
 
         if request.method == 'GET':
-            serializer = MentorSerializer(mentor)
+            serializer = AdvisorSerializer(mentor)
             return JsonResponse(serializer.data)
 
         elif request.method == 'PUT':
             data = JSONParser().parse(request)
-            serializer = MentorSerializer(mentor, data=data)
+            serializer = AdvisorSerializer(mentor, data=data)
             if serializer.is_valid():
                 serializer.save()
                 return JsonResponse(serializer.data)
@@ -78,49 +63,43 @@ class MentorViewSet(viewsets.ModelViewSet):
             mentor.delete()
 
 
-class SeekerViewSet(viewsets.ModelViewSet):
-    queryset = Seeker.objects.all()
-    serializer_class = SeekerSerializer
+@swagger_auto_schema(method='post', request_body=CreateUserSerializer)
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def register(request):
+    serializer = CreateUserSerializer(data=request.data)
 
-    @csrf_exempt
-    def seeker_list(self, request):
-        """
-        List all code seekers, or create a new seeker.
-        """
-        if request.method == 'GET':
-            seekers = Seeker.objects.all()
-            serializer = SeekerSerializer(seekers, many=True)
-            return JsonResponse(serializer.data, safe=False)
+    if serializer.is_valid():
+        users_client = UsersClient(config.org_url, config.token)
 
-        elif request.method == 'POST':
-            data = JSONParser().parse(request)
-            serializer = SeekerSerializer(data=data)
-            if serializer.is_valid():
-                serializer.save()
-                return JsonResponse(serializer.data, status=201)
-            return JsonResponse(serializer.errors, status=400)
-
-    @csrf_exempt
-    def seeker_detail(self, request, pk):
-        """
-        Retrieve, update or delete a code seeker.
-        """
+        new_user = User(login=serializer.data['email'],
+                        email=serializer.data['email'],
+                        firstName=serializer.data['first_name'],
+                        lastName=serializer.data['last_name'])
         try:
-            seeker = Seeker.objects.get(pk=pk)
-        except Seeker.DoesNotExist:
-            return HttpResponse(status=404)
+            user = users_client.create_user(new_user, activate=False)
+            Users.objects.create(okta_id=user.id,
+                                 email=serializer.data['email'],
+                                 first_name=serializer.data['first_name'],
+                                 last_name=serializer.data['last_name']).save()
 
-        if request.method == 'GET':
-            serializer = SeekerSerializer(seeker)
-            return JsonResponse(serializer.data)
+        except Exception as e:
+            return JsonResponse({
+                "status": False,
+                "message": "error on creating users",
+                "result": e.args[0]
+            })
+        return JsonResponse({
+            "status": True,
+            "message": "create user successfully",
+            "result": {
+                "user_id": user.id,
+                "user_email": user.profile.email
+            }
+        })
 
-        elif request.method == 'PUT':
-            data = JSONParser().parse(request)
-            serializer = SeekerSerializer(seeker, data=data)
-            if serializer.is_valid():
-                serializer.save()
-                return JsonResponse(serializer.data)
-            return JsonResponse(serializer.errors, status=400)
-
-        elif request.method == 'DELETE':
-            seeker.delete()
+    return JsonResponse({
+        "status": False,
+        "message": "error on creating users",
+        "result": serializer.errors
+    })

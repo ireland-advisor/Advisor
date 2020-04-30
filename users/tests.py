@@ -4,9 +4,8 @@ from django.urls import reverse
 from rest_framework.test import APITestCase
 from rest_framework.utils import json
 
-from users.models import Mentor
-from users.models import Seeker
-from users.serializers import MentorSerializer
+from users.models import Advisor
+from users.serializers import AdvisorSerializer
 
 
 class UserTest(TestCase):
@@ -79,13 +78,13 @@ class MentorTest(APITestCase):
         self.mentor_des = 'he is genious'
         self.mentor_expert = 'coding'
 
-        self.mentor = Mentor.objects.create(first_name=self.mentor_first_name,
-                                            middle_name=self.mentor_middle_name,
-                                            last_name=self.mentor_last_name,
-                                            gender=self.mentor_gender,
-                                            title=self.mentor_title,
-                                            expertiseFields=self.mentor_expert,
-                                            des=self.mentor_des)
+        self.mentor = Advisor.objects.create(first_name=self.mentor_first_name,
+                                             middle_name=self.mentor_middle_name,
+                                             last_name=self.mentor_last_name,
+                                             gender=self.mentor_gender,
+                                             title=self.mentor_title,
+                                             expertiseFields=self.mentor_expert,
+                                             des=self.mentor_des)
 
         self.mentor.save()
 
@@ -93,7 +92,7 @@ class MentorTest(APITestCase):
         self.mentor.delete()
 
     def test_post_mentor_list(self):
-        mentor_serializer_data = json.dumps(MentorSerializer(instance=self.mentor).data)
+        mentor_serializer_data = json.dumps(AdvisorSerializer(instance=self.mentor).data)
         resp = self.client.post(self.mentor_list_url, mentor_serializer_data, content_type='application/json')
         self.assertEqual(201, resp.status_code)
         self.assertIn(self.mentor.title.encode(), resp.content)
@@ -104,7 +103,7 @@ class MentorTest(APITestCase):
         self.assertIn(self.mentor.title.encode(), resp.content)
 
     def test_put_mentor_detail(self):
-        mentor_serializer_data = json.dumps(MentorSerializer(instance=self.mentor).data)
+        mentor_serializer_data = json.dumps(AdvisorSerializer(instance=self.mentor).data)
         resp = self.client.put(self.mentor_detail_url, mentor_serializer_data, content_type='application/json')
         self.assertEqual(200, resp.status_code)
         self.assertIn(self.mentor.title.encode(), resp.content)
@@ -113,54 +112,3 @@ class MentorTest(APITestCase):
         resp = self.client.get(self.mentor_detail_url, content_type='application/json')
         self.assertEqual(200, resp.status_code)
         self.assertIn(self.mentor.title.encode(), resp.content)
-
-
-class SeekerTestCase(APITestCase):
-
-    def setUp(self) -> None:
-        self.seeker_list_url = reverse("seekers-list")
-        self.seeker_detail_url = reverse("seekers-detail", args=(1,))
-
-        self.GENDER_CHOICES = (("0", "male"), ("1", "female"))
-
-        self.seeker_first_name = "haha"
-        self.seeker_middle_name = "haha"
-        self.seeker_last_name = "la"
-        self.seeker_gender = self.GENDER_CHOICES[1][0]
-        self.seeker_title = 'loser'
-        self.seeker_des = 'he is loser'
-        self.seeking_expert = 'coding'
-
-        self.seeker = Seeker.objects.create(first_name=self.seeker_first_name,
-                                            middle_name=self.seeker_middle_name,
-                                            last_name=self.seeker_last_name,
-                                            gender=self.seeker_gender,
-                                            title=self.seeker_title,
-                                            seekingFields=self.seeking_expert,
-                                            des=self.seeker_des)
-        self.seeker.save()
-
-    def tearDown(self) -> None:
-        self.seeker.delete()
-
-    def test_post_seeker_list(self):
-        mentor_serializer_data = json.dumps(MentorSerializer(instance=self.seeker).data)
-        resp = self.client.post(self.seeker_list_url, mentor_serializer_data, content_type='application/json')
-        self.assertEqual(201, resp.status_code)
-        self.assertIn(self.seeker.title.encode(), resp.content)
-
-    def test_get_seeker_list(self):
-        resp = self.client.get(self.seeker_list_url, content_type='application/json')
-        self.assertEqual(200, resp.status_code)
-        self.assertIn(self.seeker.title.encode(), resp.content)
-
-    def test_put_seeker_detail(self):
-        mentor_serializer_data = json.dumps(MentorSerializer(instance=self.seeker).data)
-        resp = self.client.put(self.seeker_detail_url, mentor_serializer_data, content_type='application/json')
-        self.assertEqual(200, resp.status_code)
-        self.assertIn(self.seeker.title.encode(), resp.content)
-
-    def test_get_seeker_detail(self):
-        resp = self.client.get(self.seeker_detail_url, content_type='application/json')
-        self.assertEqual(200, resp.status_code)
-        self.assertIn(self.seeker.title.encode(), resp.content)

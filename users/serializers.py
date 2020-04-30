@@ -1,28 +1,22 @@
-
-from django.contrib.auth.models import User, Group
 from rest_framework import serializers
-from users.models import Mentor, Seeker
+from .models import Advisor, Users
+from django.core.validators import EmailValidator
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class CreateUserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ['url', 'username', 'email', 'groups']
+        model = Users
+        fields = ('first_name', 'last_name', 'email')
+        extra_kwargs = {
+            'email': {'validators': [EmailValidator, ]}
+        }
 
 
-class GroupSerializer(serializers.HyperlinkedModelSerializer):
+class AdvisorSerializer(serializers.ModelSerializer):
+
     class Meta:
-        model = Group
-        fields = ['url', 'name']
-
-
-class MentorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Mentor
-        fields = ['first_name','gender','title','des','expertiseFields','isAvailable']
-
-
-class SeekerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Seeker
-        fields = ['first_name','gender','title','des','seekingFields']
+        model = Advisor
+        fields = [
+                  'icon_url',
+                  'personal_des',
+                  'tags']

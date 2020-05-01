@@ -23,15 +23,27 @@ class Config:
     token = settings.TOKEN
 
 
+class Users(models.Model):
+    first_name = models.CharField(max_length=20, blank=True, default='')
+    last_name = models.CharField(max_length=20, blank=True, default='')
+    email = models.CharField(max_length=20, unique=True, default='')
+    okta_id = models.CharField(max_length=20, blank=True, default='0')
+
+    class Meta:
+        verbose_name = "user auth information"
+        verbose_name_plural = verbose_name
+
+
 class Advisor(models.Model):
     created = models.DateTimeField(auto_now_add=True)
+    user = models.OneToOneField(Users, on_delete=models.CASCADE, verbose_name="user", null=True)
     icon_url = models.TextField()
     gender = models.CharField("gender", max_length=6, choices=GENDER_CHOICES, default="female")
     personal_des = models.TextField(blank=False)
     tags = models.TextField()
     birthday = models.DateField("year-month-day", null=True, blank=True)
-    mentoringFields = models.TextField(default='non')
-    seekingFields = models.TextField(default='non')
+    mentoring_fields = models.TextField(default='non')
+    seeking_fields = models.TextField(default='non')
     isAvailable = models.BooleanField(default=False)
     language = models.CharField(choices=LANGUAGE_CHOICES, default='python', max_length=100)
 
@@ -51,13 +63,3 @@ class Advisor(models.Model):
         verbose_name_plural = verbose_name
 
 
-class Users(models.Model):
-    first_name = models.CharField(max_length=20, blank=True, default='')
-    last_name = models.CharField(max_length=20, blank=True, default='')
-    email = models.CharField(max_length=20, unique=True, default='')
-    okta_id = models.CharField(max_length=20, blank=True, default='0')
-
-
-    class Meta:
-        verbose_name = "user auth information"
-        verbose_name_plural = verbose_name

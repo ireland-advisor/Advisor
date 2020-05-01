@@ -13,10 +13,24 @@ class CreateUserSerializer(serializers.ModelSerializer):
 
 
 class AdvisorSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Advisor
         fields = [
-                  'icon_url',
-                  'personal_des',
-                  'tags']
+            'icon_url',
+            'personal_des',
+            'tags',
+            'gender',
+            'personal_des',
+            'birthday',
+            'mentoring_fields',
+            'seeking_fields',
+            'isAvailable',
+            'language',
+            'university',
+            'degree',
+            'country',
+            'city',
+            'current_business_title',
+            'industry',
+            'working_experience'
+        ]

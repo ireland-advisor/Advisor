@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from django.contrib import admin
-from .models import Advisor, Users
+from .models import Profile, Users
 
-admin.site.register(Advisor)
+admin.site.register(Profile)
 admin.site.register(Users)

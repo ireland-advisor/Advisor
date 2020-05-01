@@ -4,7 +4,7 @@ from django.urls import reverse
 from rest_framework.test import APITestCase
 from rest_framework.utils import json
 
-from users.models import Advisor
+from users.models import Profile
 from users.serializers import AdvisorSerializer
 
 
@@ -78,7 +78,7 @@ class MentorTest(APITestCase):
         self.mentor_des = 'he is genious'
         self.mentor_expert = 'coding'
 
-        self.mentor = Advisor.objects.create(first_name=self.mentor_first_name,
+        self.mentor = Profile.objects.create(first_name=self.mentor_first_name,
                                              middle_name=self.mentor_middle_name,
                                              last_name=self.mentor_last_name,
                                              gender=self.mentor_gender,

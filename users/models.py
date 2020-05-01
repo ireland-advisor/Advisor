@@ -34,7 +34,7 @@ class Users(models.Model):
         verbose_name_plural = verbose_name
 
 
-class Advisor(models.Model):
+class Profile(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     user = models.OneToOneField(Users, on_delete=models.CASCADE, verbose_name="user", null=True)
     icon_url = models.TextField()

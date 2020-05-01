@@ -3,7 +3,7 @@ from django.contrib.auth import login
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
-from users.models import Advisor, Users
+from users.models import Profile, Users
 from users.serializers import AdvisorSerializer, CreateUserSerializer
 from django.contrib.auth.models import User
 from rest_framework import viewsets
@@ -19,13 +19,14 @@ config = Config()
 
 
 class AdvisorViewSet(viewsets.ModelViewSet):
-    queryset = Advisor.objects.all()
+    queryset = Profile.objects.all()
     serializer_class = AdvisorSerializer
+    lookup_field = 'user_id'
 
     @csrf_exempt
     def advisor_list(self, request):
         if request.method == 'GET':
-            mentors = Advisor.objects.all()
+            mentors = Profile.objects.all()
             serializer = AdvisorSerializer(mentors, many=True)
             return JsonResponse(serializer.data, safe=False)
 
@@ -43,8 +44,8 @@ class AdvisorViewSet(viewsets.ModelViewSet):
         Retrieve, update or delete a code mentor.
         """
         try:
-            mentor = Advisor.objects.get(pk=pk)
-        except Advisor.DoesNotExist:
+            mentor = Profile.objects.get(pk=pk)
+        except Profile.DoesNotExist:
             return HttpResponse(status=404)
 
         if request.method == 'GET':

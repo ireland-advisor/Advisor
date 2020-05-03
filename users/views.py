@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from users.models import Profile, Users
-from users.serializers import AdvisorSerializer, CreateUserSerializer
+from users.serializers import ProfileSerializer, CreateUserSerializer
 from django.contrib.auth.models import User
 from rest_framework import viewsets
 from django.http import JsonResponse
@@ -20,19 +20,19 @@ config = Config()
 
 class AdvisorViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
-    serializer_class = AdvisorSerializer
+    serializer_class = ProfileSerializer
     lookup_field = 'user_id'
 
     @csrf_exempt
     def advisor_list(self, request):
         if request.method == 'GET':
-            mentors = Profile.objects.all()
-            serializer = AdvisorSerializer(mentors, many=True)
+            advisors = Profile.objects.all()
+            serializer = ProfileSerializer(advisors, many=True)
             return JsonResponse(serializer.data, safe=False)
 
         elif request.method == 'POST':
             data = JSONParser().parse(request)
-            serializer = AdvisorSerializer(data=data)
+            serializer = ProfileSerializer(data=data)
             if serializer.is_valid():
                 serializer.save()
                 return JsonResponse(serializer.data, status=201)
@@ -44,24 +44,24 @@ class AdvisorViewSet(viewsets.ModelViewSet):
         Retrieve, update or delete a code mentor.
         """
         try:
-            mentor = Profile.objects.get(pk=pk)
+            advisor = Profile.objects.get(user_id=pk)
         except Profile.DoesNotExist:
             return HttpResponse(status=404)
 
         if request.method == 'GET':
-            serializer = AdvisorSerializer(mentor)
+            serializer = ProfileSerializer(advisor)
             return JsonResponse(serializer.data)
 
         elif request.method == 'PUT':
             data = JSONParser().parse(request)
-            serializer = AdvisorSerializer(mentor, data=data)
+            serializer = ProfileSerializer(advisor, data=data)
             if serializer.is_valid():
                 serializer.save()
                 return JsonResponse(serializer.data)
             return JsonResponse(serializer.errors, status=400)
 
         elif request.method == 'DELETE':
-            mentor.delete()
+            advisor.delete()
 
 
 @swagger_auto_schema(method='post', request_body=CreateUserSerializer)
@@ -72,7 +72,6 @@ def register(request):
 
     if serializer.is_valid():
         users_client = UsersClient(config.org_url, config.token)
-
         new_user = User(login=serializer.data['email'],
                         email=serializer.data['email'],
                         firstName=serializer.data['first_name'],
@@ -89,7 +88,7 @@ def register(request):
                 "status": False,
                 "message": "error on creating users",
                 "result": e.args[0]
-            })
+            }, status=400)
         return JsonResponse({
             "status": True,
             "message": "create user successfully",
@@ -97,10 +96,10 @@ def register(request):
                 "user_id": user.id,
                 "user_email": user.profile.email
             }
-        })
+        }, status=200)
 
     return JsonResponse({
         "status": False,
         "message": "error on creating users",
         "result": serializer.errors
-    })
+    }, status=400)

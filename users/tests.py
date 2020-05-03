@@ -5,7 +5,7 @@ from rest_framework.test import APITestCase
 from rest_framework.utils import json
 
 from users.models import Profile
-from users.serializers import AdvisorSerializer
+from users.serializers import ProfileSerializer
 
 
 class UserTest(TestCase):
@@ -92,7 +92,7 @@ class MentorTest(APITestCase):
         self.mentor.delete()
 
     def test_post_mentor_list(self):
-        mentor_serializer_data = json.dumps(AdvisorSerializer(instance=self.mentor).data)
+        mentor_serializer_data = json.dumps(ProfileSerializer(instance=self.mentor).data)
         resp = self.client.post(self.mentor_list_url, mentor_serializer_data, content_type='application/json')
         self.assertEqual(201, resp.status_code)
         self.assertIn(self.mentor.title.encode(), resp.content)
@@ -103,7 +103,7 @@ class MentorTest(APITestCase):
         self.assertIn(self.mentor.title.encode(), resp.content)
 
     def test_put_mentor_detail(self):
-        mentor_serializer_data = json.dumps(AdvisorSerializer(instance=self.mentor).data)
+        mentor_serializer_data = json.dumps(ProfileSerializer(instance=self.mentor).data)
         resp = self.client.put(self.mentor_detail_url, mentor_serializer_data, content_type='application/json')
         self.assertEqual(200, resp.status_code)
         self.assertIn(self.mentor.title.encode(), resp.content)

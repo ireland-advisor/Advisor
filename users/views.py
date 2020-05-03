@@ -78,10 +78,11 @@ def register(request):
                         lastName=serializer.data['last_name'])
         try:
             user = users_client.create_user(new_user, activate=False)
-            Users.objects.create(okta_id=user.id,
+            a_user = Users.objects.create(okta_id=user.id,
                                  email=serializer.data['email'],
                                  first_name=serializer.data['first_name'],
-                                 last_name=serializer.data['last_name']).save()
+                                 last_name=serializer.data['last_name'])
+            a_user.save()
 
         except Exception as e:
             return JsonResponse({
@@ -93,7 +94,7 @@ def register(request):
             "status": True,
             "message": "create user successfully",
             "result": {
-                "user_id": user.id,
+                "user_id": a_user.id,
                 "user_email": user.profile.email
             }
         }, status=200)

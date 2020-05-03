@@ -10,7 +10,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Users
-        fields = ('id', 'first_name', 'last_name', 'email', 'okta_id')
+        fields = ('first_name', 'last_name', 'email', 'okta_id')
         extra_kwargs = {
             'email': {'validators': [EmailValidator, ]}
         }
@@ -19,7 +19,8 @@ class CreateUserSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     # filed in source= reflects to the database, field in left variable reflects to the json fields
     # you have to be very careful about the name standards
-    gender = serializers.CharField(source='get_gender_display', required=False)
+    gender_read = serializers.CharField(source='get_gender_display', required=False, read_only=True)
+    gender = serializers.CharField(write_only=True, required=False)
     # read only
     icon = serializers.SerializerMethodField(source='get_icon')
     user_id = serializers.CharField(read_only=False, required=True, error_messages={
@@ -37,6 +38,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             'user_id',
             'icon',
             'tags',
+            'gender_read',
             'gender',
             'personal_des',
             'birthday',

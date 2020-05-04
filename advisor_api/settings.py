@@ -37,6 +37,7 @@ CLIENT_SECRET = os.environ.get("CLIENT_SECRET")
 SCOPES = os.environ.get("SCOPES")
 REDIRECT_URI = os.environ.get("REDIRECT_URI")
 TOKEN = os.environ.get("TOKEN")
+AUD = os.environ.get("AUD")
 
 # Application definition
 

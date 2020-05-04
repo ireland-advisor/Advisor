@@ -1,7 +1,7 @@
 # Create your views here.
-from django.contrib.auth import login
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from okta_jwt.jwt import validate_token
 from rest_framework.parsers import JSONParser
 from users.models import Profile, Users
 from users.serializers import ProfileSerializer, CreateUserSerializer
@@ -68,8 +68,17 @@ class AdvisorViewSet(viewsets.ModelViewSet):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register(request):
-    serializer = CreateUserSerializer(data=request.data)
+    access_token = request.META.get('HTTP_AUTHORIZATION')
+    try:
+        validate_token(access_token, config.issuer, config.aud, config.client_id)
+    except Exception as e:
+        return JsonResponse({
+            "status": False,
+            "message": "token is invalid/null",
+            "result": e.args[0]
+        }, status=400)
 
+    serializer = CreateUserSerializer(data=request.data)
     if serializer.is_valid():
         users_client = UsersClient(config.org_url, config.token)
         new_user = User(login=serializer.data['email'],
@@ -78,10 +87,10 @@ def register(request):
                         lastName=serializer.data['last_name'])
         try:
             user = users_client.create_user(new_user, activate=False)
-            a_user = Users.objects.create(okta_id=user.id,
-                                 email=serializer.data['email'],
-                                 first_name=serializer.data['first_name'],
-                                 last_name=serializer.data['last_name'])
+            a_user = Users.objects.create(
+                                          email=serializer.data['email'],
+                                          first_name=serializer.data['first_name'],
+                                          last_name=serializer.data['last_name'])
             a_user.save()
 
         except Exception as e:
@@ -90,6 +99,7 @@ def register(request):
                 "message": "error on creating users",
                 "result": e.args[0]
             }, status=400)
+
         return JsonResponse({
             "status": True,
             "message": "create user successfully",

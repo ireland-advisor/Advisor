@@ -16,13 +16,13 @@ class Config:
     scopes = settings.SCOPES
     redirect_uri = settings.REDIRECT_URI
     token = settings.TOKEN
+    aud = settings.AUD
 
 
 class Users(models.Model):
     first_name = models.CharField(max_length=50, default='non-fn', blank=False)
     last_name = models.CharField(max_length=50,  default='non-ln', blank=True)
     email = models.CharField(max_length=100, unique=True, default='', blank=False)
-    okta_id = models.CharField(max_length=50, unique=True, default='0', blank=False)
 
     class Meta:
         verbose_name = "users"

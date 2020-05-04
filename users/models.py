@@ -1,11 +1,6 @@
 from django.db import models
-from pygments.lexers import get_all_lexers
-from pygments.styles import get_all_styles
 from django.conf import settings
 
-LEXERS = [item for item in get_all_lexers() if item[1]]
-LANGUAGE_CHOICES = sorted([(item[1][0], item[0]) for item in LEXERS])
-STYLE_CHOICES = sorted([(item, item) for item in get_all_styles()])
 GENDER_CHOICES = (("0", "male"), ("1", "female"))
 
 
@@ -21,19 +16,31 @@ class Config:
     scopes = settings.SCOPES
     redirect_uri = settings.REDIRECT_URI
     token = settings.TOKEN
+    aud = settings.AUD
 
 
-class Advisor(models.Model):
+class Users(models.Model):
+    first_name = models.CharField(max_length=50, default='non-fn', blank=False)
+    last_name = models.CharField(max_length=50,  default='non-ln', blank=True)
+    email = models.CharField(max_length=100, unique=True, default='', blank=False)
+
+    class Meta:
+        verbose_name = "users"
+        verbose_name_plural = verbose_name
+
+
+class Profile(models.Model):
     created = models.DateTimeField(auto_now_add=True)
+    user = models.OneToOneField(Users, on_delete=models.CASCADE, verbose_name="user", blank=False)
     icon_url = models.TextField()
-    gender = models.CharField("gender", max_length=6, choices=GENDER_CHOICES, default="female")
-    personal_des = models.TextField(blank=False)
-    tags = models.TextField()
+    gender = models.CharField("gender", blank=True, max_length=6, choices=GENDER_CHOICES, default="female")
+    personal_des = models.TextField(blank=True)
+    tags = models.TextField(blank=True)
     birthday = models.DateField("year-month-day", null=True, blank=True)
-    mentoringFields = models.TextField(default='non')
-    seekingFields = models.TextField(default='non')
+    mentoring_fields = models.TextField(default='non')
+    seeking_fields = models.TextField(default='non')
     isAvailable = models.BooleanField(default=False)
-    language = models.CharField(choices=LANGUAGE_CHOICES, default='python', max_length=100)
+    language = models.CharField(default='english', max_length=100)
 
     university = models.CharField(max_length=50, default='non')
     degree = models.CharField(max_length=50, default='non')
@@ -47,17 +54,7 @@ class Advisor(models.Model):
 
     class Meta:
         ordering = ['created']
-        verbose_name = "advisor"
+        verbose_name = "profile"
         verbose_name_plural = verbose_name
 
 
-class Users(models.Model):
-    first_name = models.CharField(max_length=20, blank=True, default='')
-    last_name = models.CharField(max_length=20, blank=True, default='')
-    email = models.CharField(max_length=20, unique=True, default='')
-    okta_id = models.CharField(max_length=20, blank=True, default='0')
-
-
-    class Meta:
-        verbose_name = "user auth information"
-        verbose_name_plural = verbose_name

@@ -1,10 +1,10 @@
 # Create your views here.
-from django.contrib.auth import login
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from okta_jwt.jwt import validate_token
 from rest_framework.parsers import JSONParser
-from users.models import Advisor, Users
-from users.serializers import AdvisorSerializer, CreateUserSerializer
+from users.models import Profile, Users
+from users.serializers import ProfileSerializer, CreateUserSerializer
 from django.contrib.auth.models import User
 from rest_framework import viewsets
 from django.http import JsonResponse
@@ -19,19 +19,20 @@ config = Config()
 
 
 class AdvisorViewSet(viewsets.ModelViewSet):
-    queryset = Advisor.objects.all()
-    serializer_class = AdvisorSerializer
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    lookup_field = 'user_id'
 
     @csrf_exempt
     def advisor_list(self, request):
         if request.method == 'GET':
-            mentors = Advisor.objects.all()
-            serializer = AdvisorSerializer(mentors, many=True)
+            advisors = Profile.objects.all()
+            serializer = ProfileSerializer(advisors, many=True)
             return JsonResponse(serializer.data, safe=False)
 
         elif request.method == 'POST':
             data = JSONParser().parse(request)
-            serializer = AdvisorSerializer(data=data)
+            serializer = ProfileSerializer(data=data)
             if serializer.is_valid():
                 serializer.save()
                 return JsonResponse(serializer.data, status=201)
@@ -43,63 +44,73 @@ class AdvisorViewSet(viewsets.ModelViewSet):
         Retrieve, update or delete a code mentor.
         """
         try:
-            mentor = Advisor.objects.get(pk=pk)
-        except Advisor.DoesNotExist:
+            advisor = Profile.objects.get(user_id=pk)
+        except Profile.DoesNotExist:
             return HttpResponse(status=404)
 
         if request.method == 'GET':
-            serializer = AdvisorSerializer(mentor)
+            serializer = ProfileSerializer(advisor)
             return JsonResponse(serializer.data)
 
         elif request.method == 'PUT':
             data = JSONParser().parse(request)
-            serializer = AdvisorSerializer(mentor, data=data)
+            serializer = ProfileSerializer(advisor, data=data)
             if serializer.is_valid():
                 serializer.save()
                 return JsonResponse(serializer.data)
             return JsonResponse(serializer.errors, status=400)
 
         elif request.method == 'DELETE':
-            mentor.delete()
+            advisor.delete()
 
 
 @swagger_auto_schema(method='post', request_body=CreateUserSerializer)
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register(request):
-    serializer = CreateUserSerializer(data=request.data)
+    access_token = request.META.get('HTTP_AUTHORIZATION')
+    try:
+        validate_token(access_token, config.issuer, config.aud, config.client_id)
+    except Exception as e:
+        return JsonResponse({
+            "status": False,
+            "message": "token is invalid/null",
+            "result": e.args[0]
+        }, status=400)
 
+    serializer = CreateUserSerializer(data=request.data)
     if serializer.is_valid():
         users_client = UsersClient(config.org_url, config.token)
-
         new_user = User(login=serializer.data['email'],
                         email=serializer.data['email'],
                         firstName=serializer.data['first_name'],
                         lastName=serializer.data['last_name'])
         try:
             user = users_client.create_user(new_user, activate=False)
-            Users.objects.create(okta_id=user.id,
-                                 email=serializer.data['email'],
-                                 first_name=serializer.data['first_name'],
-                                 last_name=serializer.data['last_name']).save()
+            a_user = Users.objects.create(
+                                          email=serializer.data['email'],
+                                          first_name=serializer.data['first_name'],
+                                          last_name=serializer.data['last_name'])
+            a_user.save()
 
         except Exception as e:
             return JsonResponse({
                 "status": False,
                 "message": "error on creating users",
                 "result": e.args[0]
-            })
+            }, status=400)
+
         return JsonResponse({
             "status": True,
             "message": "create user successfully",
             "result": {
-                "user_id": user.id,
+                "user_id": a_user.id,
                 "user_email": user.profile.email
             }
-        })
+        }, status=200)
 
     return JsonResponse({
         "status": False,
         "message": "error on creating users",
         "result": serializer.errors
-    })
+    }, status=400)

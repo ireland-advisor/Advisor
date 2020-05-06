@@ -11,19 +11,37 @@ To run this app, you have to [install python](https://realpython.com/installing-
 
 To run this repo successfully, you have to:
 
-install/upgrade pip
+install/upgrade a package
 
-`python -m pip install --upgrade pip`
+`pipenv install <package name>`
 
 install the packages:
 
-`pip install -r requirements.txt `
+`pipenv run pip freeze > requirements.txt`
+
+### Set Environment
+
+check environment variables:
+
+`python3 manage.py shell`
+
+`import os`
+
+`print (os.environ)`
+
+add environment variables:
+
+`os.environ['SECRET_KEY'] = value`
 
 launch the environment:
 
 `pipenv shell`
 
+### Run server 
+
 migrate the database:
+
+`python3 manage.py makemigrations <app name>`
 
 `python3 manage.py migrate `
 

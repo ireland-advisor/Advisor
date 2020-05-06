@@ -50,10 +50,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'drf_yasg',
-    'users.apps.UsersConfig',
     'user',
     'core',
-    'profiles.apps.ProfilesConfig',
+    'profiles',
     "django_extensions"
 ]
 

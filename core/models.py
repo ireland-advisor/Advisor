@@ -19,6 +19,7 @@ class Config:
     token = settings.TOKEN
     aud = settings.AUD
 
+
 class UserManager(BaseUserManager):
 
     def create_user(self, email, password=None, **extra_fields):

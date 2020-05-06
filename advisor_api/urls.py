@@ -43,7 +43,6 @@ urlpatterns = [
     # admin site
     path('admin/', admin.site.urls),
     # authentication site
-    path('api/users/', include('users.urls')),
     path('api/profiles/', include('profiles.urls')),
     path('api/user/', include('user.urls')),
 ]

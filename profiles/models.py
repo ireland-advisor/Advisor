@@ -1,14 +1,12 @@
 from django.db import models
-
-# Create your models here.
-# from users.models import Users
+# from core.models import User
 
 GENDER_CHOICES = (("0", "male"), ("1", "female"))
 
 
 class Profile(models.Model):
     created = models.DateTimeField(auto_now_add=True)
-    # user = models.OneToOneField(Users, on_delete=models.CASCADE, verbose_name="user", blank=False)
+    # user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="user", blank=False)
     icon_url = models.TextField()
     gender = models.CharField("gender", blank=True, max_length=6, choices=GENDER_CHOICES, default="female")
     personal_des = models.TextField(blank=True)

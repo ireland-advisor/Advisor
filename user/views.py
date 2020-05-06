@@ -1,7 +1,6 @@
 from rest_framework import generics
 from user.serializers import UserSerializer
 from okta_jwt.jwt import validate_token
-from django.contrib.auth.models import User
 from django.http import JsonResponse
 from okta.models.user import User
 from okta import UsersClient

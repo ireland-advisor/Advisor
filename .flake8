@@ -1,0 +1,10 @@
+[flake8]
+exclude =
+   migrations,
+   .git,
+   docs/source/conf.py,
+   __pycache__,
+   env,
+   manage.py,
+   settings.py
+max-line-length = 119

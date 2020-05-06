@@ -52,4 +52,3 @@ class AdvisorViewSet(viewsets.ModelViewSet):
 
         elif request.method == 'DELETE':
             advisor.delete()
-

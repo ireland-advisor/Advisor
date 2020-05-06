@@ -1,4 +1,6 @@
-# Create your views here.
+from rest_framework import generics
+
+from user.serializers import UserSerializer, AuthTokenSerializer
 from okta_jwt.jwt import validate_token
 from users.models import  Users
 from users.serializers import CreateUserSerializer
@@ -9,9 +11,14 @@ from okta.models.user import User
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from okta import UsersClient
-from .models import Config
+from core.models import Config
 
 config = Config()
+
+class CreateUserView(generics.CreateAPIView):
+    """Create a new user in the system"""
+    serializer_class = UserSerializer
+
 
 
 @swagger_auto_schema(method='post', request_body=CreateUserSerializer)

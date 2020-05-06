@@ -51,6 +51,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'users.apps.UsersConfig',
+    'user',
+    'core',
+    'profiles.apps.ProfilesConfig',
     "django_extensions"
 ]
 
@@ -141,3 +144,4 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
+AUTH_USER_MODEL = 'core.User'

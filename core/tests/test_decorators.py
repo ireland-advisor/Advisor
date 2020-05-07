@@ -1,11 +1,8 @@
-from django.contrib.auth import models
-from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponse
 from django.test import TestCase
 from django.test.client import RequestFactory
 from django.urls import reverse
 from okta_jwt.jwt import generate_token
-from rest_framework.test import APIClient
 
 from core.decorators import okta_login_required
 from core.models import Config

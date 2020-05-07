@@ -28,6 +28,7 @@ class CreateUserView(generics.CreateAPIView):
                             )
             try:
                 user = users_client.create_user(new_user, activate=False)
+                breakpoint()
                 if user.id is not None:
                     advisor_user = get_user_model().objects.create_user(
                         email=serializer.data['email'],

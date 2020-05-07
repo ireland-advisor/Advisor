@@ -9,7 +9,8 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = ('id', 'email', 'name', 'okta_id')
-        extra_kwargs = {'okta_id': {'read_only': True}}
+        extra_kwargs = {'okta_id': {'read_only': True},
+                          'id': {'read_only': True}}
 
     def create(self, validated_data):
         """Create a new user with encrypted password and return it"""

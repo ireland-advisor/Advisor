@@ -1,9 +1,14 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 
-from . import views
+from profiles import views
 
-app_name = 'profiles'
+router = DefaultRouter()
+router.register('mentor_tags', views.MentorTagsViewSet)
+router.register('seeker_tags', views.SeekerTagsViewSet)
+
+app_name = 'profile'
 
 urlpatterns = [
-    path('profile/', views.AdvisorViewSet, name='profiles'),
+    path('', include(router.urls))
 ]

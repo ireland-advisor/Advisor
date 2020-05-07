@@ -1,11 +1,12 @@
+from django.utils.decorators import method_decorator
 from rest_framework import generics
 from user.serializers import UserSerializer
-from okta_jwt.jwt import validate_token, generate_token
 from django.http import JsonResponse
 from okta.models.user import User
 from okta import UsersClient
 from core.models import Config
 from django.contrib.auth import get_user_model
+from core.decorators import okta_login_required
 
 config = Config()
 
@@ -14,14 +15,8 @@ class CreateUserView(generics.CreateAPIView):
     """Create a new user in the system"""
     serializer_class = UserSerializer
 
+    @method_decorator(okta_login_required)
     def post(self, request, *args, **kwargs):
-        # access_token = generate_token(config.issuer, config.client_id, config.client_secret, "leebusiness197@gmail.com","Advisor2020")
-        # print(access_token)
-        access_token = request.META.get('HTTP_AUTHORIZATION')
-        try:
-            validate_token(access_token, config.issuer, config.aud, config.client_id)
-        except Exception as e:
-            return JsonResponse({"result": e.args[0]}, status=400)
 
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():

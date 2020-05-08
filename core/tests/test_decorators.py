@@ -27,7 +27,7 @@ class PermissionsRequiredDecoratorTest(TestCase):
 
     def test_okta_login_pass(self):
         @okta_login_required
-        def a_view(request):
+        def a_view():
             return HttpResponse()
 
         request = self.factory.post('/rand', **{'HTTP_AUTHORIZATION': self.access_token})

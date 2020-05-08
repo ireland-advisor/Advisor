@@ -7,7 +7,6 @@ from django.urls import reverse
 from okta_jwt.jwt import generate_token
 from rest_framework.test import APIClient
 from rest_framework import status
-from rest_framework.utils import json
 
 from core.models import Config
 
@@ -42,10 +41,10 @@ class PrivateUserApiTest(TestCase):
 
         res = self.client.post(CREATE_USER_URL, payload, **{'HTTP_AUTHORIZATION': self.access_token})
 
-        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         self.assertJSONEqual(
             str(res.content, encoding='utf8'),
-            {'result': {'user_id': 1}}
+            {'user_id': 1}
         )
 
     def test_user_exits(self):

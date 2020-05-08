@@ -1,26 +1,40 @@
 from django.http import JsonResponse
-from django.utils.decorators import method_decorator
-from rest_framework import generics, status
+from okta import UsersClient
+from okta.models.user import User
+from rest_framework import generics
 
+from core.models import Config
 from user.serializers import UserSerializer
-from rest_framework.response import Response
 
 from django.contrib.auth import get_user_model
-from core.decorators import okta_login_required
+
+config = Config()
 
 
 class CreateUserView(generics.CreateAPIView):
     """Create a new user in the system"""
     serializer_class = UserSerializer
 
-    @method_decorator(okta_login_required)
     def post(self, request, *args, **kwargs):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
-            user = get_user_model().objects.create_user(
-                email=serializer.data['email'],
-                name=serializer.data['name'],
-            )
+            users_client = UsersClient(config.org_url, config.token)
+            okta_user = User(login=serializer.data['email'],
+                             email=serializer.data['email'],
+                             firstName=serializer.data['name'],
+                             lastName=serializer.data['name']
+                             )
+            try:
+                okta_user_id = users_client.create_user(okta_user, activate=False).id
+                if okta_user_id is not None:
+                    user = get_user_model().objects.create_user(
+                        email=serializer.data['email'],
+                        name=serializer.data['name'],
+                        okta_id=okta_user_id
+                    )
+                    return JsonResponse({"result": {"user_id": user.id}}, status=200)
 
-            return JsonResponse({"user_id": user.id}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            except Exception as e:
+                return e.args[0]
+
+        return JsonResponse({"result": serializer.errors}, status=400)

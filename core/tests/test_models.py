@@ -1,3 +1,5 @@
+import datetime
+
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from core import models
@@ -61,3 +63,15 @@ class ModelTest(TestCase):
         )
 
         self.assertEqual(str(seeker_tag), seeker_tag.name)
+
+    def test_recipe_str(self):
+        """Test the recipe string representation"""
+        profile = models.Profile.objects.create(
+            user=sample_user(),
+            title='English Teacher',
+            gender=0,
+            birthday="1990-10-19",
+            personal_des="I want to teach some Chinese"
+        )
+
+        self.assertEqual(str(profile), profile.title)

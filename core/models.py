@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
     PermissionsMixin
@@ -76,3 +77,28 @@ class MentoringTags(models.Model):
 
     def __str__(self):
         return self.name
+
+
+GENDER_CHOICES = (("0", "male"), ("1", "female"))
+
+
+class Profile(models.Model):
+    """Recipe object"""
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    title = models.CharField(max_length=255)
+    gender = models.CharField("gender",
+                              max_length=55,
+                              blank=True,
+                              choices=GENDER_CHOICES,
+                              default="female")
+    personal_des = models.TextField(max_length=255, blank=True)
+    birthday = models.DateField("year-month-day", blank=True)
+    seeking_tags = models.ManyToManyField('MentoringTags')
+    mentoring_tags = models.ManyToManyField('SeekingTags')
+    is_available = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.title

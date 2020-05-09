@@ -8,10 +8,10 @@ from .models import MentoringTags, SeekingTags
 
 class UserAdmin(BaseUserAdmin):
     ordering = ["id"]
-    list_display = ["id", "email", "name", "okta_id"]
+    list_display = ["id", "email", "first_name", "last_name", "okta_id"]
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        (_('Personal Info'), {'fields': ('name',)}),
+        (_('Personal Info'), {'fields': ("first_name", "last_name",)}),
         (
             _('Permissions'),
             {

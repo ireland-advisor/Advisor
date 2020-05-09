@@ -21,15 +21,16 @@ class CreateUserView(generics.CreateAPIView):
             users_client = UsersClient(config.org_url, config.token)
             okta_user = User(login=serializer.data['email'],
                              email=serializer.data['email'],
-                             firstName=serializer.data['name'],
-                             lastName=serializer.data['name']
+                             firstName=serializer.data['first_name'],
+                             lastName=serializer.data['last_name']
                              )
             try:
                 okta_user_id = users_client.create_user(okta_user, activate=False).id
                 if okta_user_id is not None:
                     user = get_user_model().objects.create_user(
                         email=serializer.data['email'],
-                        name=serializer.data['name'],
+                        first_name=serializer.data['first_name'],
+                        last_name=serializer.data['last_name'],
                         okta_id=okta_user_id
                     )
                     return JsonResponse( {"user_id": user.id}, status=201)

@@ -36,7 +36,8 @@ class PrivateUserApiTest(TestCase):
         email_head = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(15))
 
         payload = {'email': email_head + '@gmail.com',
-                   'name': 'test name'
+                   'first_name': 'test name',
+                   'last_name': 'last_name'
                    }
 
         res = self.client.post(CREATE_USER_URL, payload, **{'HTTP_AUTHORIZATION': self.access_token})
@@ -50,7 +51,8 @@ class PrivateUserApiTest(TestCase):
     def test_user_exits(self):
         """"test that user already exits failed"""
         payload = {'email': 'lee@gmail.com',
-                   'name': 'Test'}
+                   'first_name': 'Test',
+                   'last_name': 'Test'}
         create_user(**payload)
 
         res = self.client.post(CREATE_USER_URL, payload, **{'HTTP_AUTHORIZATION': self.access_token})

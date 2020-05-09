@@ -5,13 +5,10 @@ from django.http import HttpResponse, JsonResponse
 from django.test import TestCase
 from django.test.client import RequestFactory
 from django.urls import reverse
-from okta_jwt.jwt import generate_token
 from rest_framework.utils import json
 
 from core.decorators import okta_login_required, check_token
-from core.models import Config
 
-config = Config()
 CREATE_USER_URL = reverse('user:create')
 
 

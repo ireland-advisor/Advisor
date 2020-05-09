@@ -4,11 +4,9 @@ import random
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
-from okta_jwt.jwt import generate_token
 from rest_framework.test import APIClient
 from rest_framework import status
 
-from core.models import Config
 
 CREATE_USER_URL = reverse('user:create')
 
@@ -17,19 +15,11 @@ def create_user(**params):
     return get_user_model().objects.create_user(**params)
 
 
-config = Config()
-
-
-class PrivateUserApiTest(TestCase):
+class PublicUserApiTest(TestCase):
     """Test the user api (public)"""
 
     def setUp(self) -> None:
         self.client = APIClient()
-        self.access_token = generate_token(config.issuer,
-                                           config.client_id,
-                                           config.client_secret,
-                                           "leebusiness197@gmail.com",
-                                           "Advisor2020")
 
     def test_create_valid_user_success(self):
         """test creating user with valid payload is successful"""
@@ -40,7 +30,7 @@ class PrivateUserApiTest(TestCase):
                    'last_name': 'last_name'
                    }
 
-        res = self.client.post(CREATE_USER_URL, payload, **{'HTTP_AUTHORIZATION': self.access_token})
+        res = self.client.post(CREATE_USER_URL, payload)
 
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         self.assertJSONEqual(
@@ -55,6 +45,6 @@ class PrivateUserApiTest(TestCase):
                    'last_name': 'Test'}
         create_user(**payload)
 
-        res = self.client.post(CREATE_USER_URL, payload, **{'HTTP_AUTHORIZATION': self.access_token})
+        res = self.client.post(CREATE_USER_URL, payload)
 
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)

@@ -1,12 +1,12 @@
 import string
 import random
+from unittest.mock import patch
 
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
-
 
 CREATE_USER_URL = reverse('user:create')
 
@@ -21,8 +21,15 @@ class PublicUserApiTest(TestCase):
     def setUp(self) -> None:
         self.client = APIClient()
 
-    def test_create_valid_user_success(self):
+    @patch('user.views.UsersClient')
+    @patch('user.views.User')
+    def test_create_valid_user_success(self, mock_user, mock_user_client):
         """test creating user with valid payload is successful"""
+        client_instance = mock_user_client.return_value
+        user_instance = mock_user.return_value
+        user_instance.id = 1
+        client_instance.create_user.return_value = user_instance
+
         email_head = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(15))
 
         payload = {'email': email_head + '@gmail.com',

@@ -33,7 +33,7 @@ class CreateUserView(generics.CreateAPIView):
                         last_name=serializer.data['last_name'],
                         okta_id=okta_user_id
                     )
-                    return JsonResponse( {"user_id": user.id}, status=201)
+                    return JsonResponse({"user_id": user.id}, status=201)
 
             except Exception as e:
                 return e.args[0]

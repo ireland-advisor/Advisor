@@ -96,8 +96,8 @@ class Profile(models.Model):
                               default="female")
     personal_des = models.TextField(max_length=255, blank=True)
     birthday = models.DateField("year-month-day", blank=True)
-    seeking_tags = models.ManyToManyField('MentoringTags')
-    mentoring_tags = models.ManyToManyField('SeekingTags')
+    seeking_tags = models.ManyToManyField('SeekingTags')
+    mentoring_tags = models.ManyToManyField('MentoringTags')
     is_available = models.BooleanField(default=False)
 
     def __str__(self):

@@ -64,7 +64,7 @@ class ModelTest(TestCase):
 
         self.assertEqual(str(seeker_tag), seeker_tag.name)
 
-    def test_recipe_str(self):
+    def test_profile_str(self):
         """Test the recipe string representation"""
         profile = models.Profile.objects.create(
             user=sample_user(),

@@ -28,6 +28,10 @@ jobs:
       - name: Install dependencies
         run: |
           pipenv install --dev
+      - name: Run migrations
+        run: |
+          python manage.py makemigrations core
+          python manage.py migrate
       - name: Run Tests
         run: |
           pipenv run python manage.py test

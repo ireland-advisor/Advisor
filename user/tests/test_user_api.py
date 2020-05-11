@@ -33,8 +33,8 @@ class PublicUserApiTest(TestCase):
         email_head = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(15))
 
         payload = {'email': email_head + '@gmail.com',
-                   'first_name': 'test name',
-                   'last_name': 'last_name'
+                   'first_name': 'fisrt name',
+                   'last_name': 'last name'
                    }
 
         res = self.client.post(CREATE_USER_URL, payload)

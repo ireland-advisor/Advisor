@@ -40,9 +40,8 @@ urlpatterns = [
     url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    # admin site
+
     path('admin/', admin.site.urls),
-    # authentication site
-    path('api/profiles/', include('profiles.urls')),
     path('api/user/', include('user.urls')),
+    path('api/profiles/', include('profiles.urls')),
 ]

@@ -104,8 +104,8 @@ DATABASES = {
         'NAME': os.environ.get("ADVISOR_DB_NAME"),
         'USER': os.environ.get("ADVISOR_DB_USER"),
         'PASSWORD': os.environ.get("ADVISOR_DB_PW"),
-        'HOST': 'localhost',
-        'PORT': '',
+        'HOST': os.environ.get("ADVISOR_DB_HOST"),
+        'PORT': os.environ.get("ADVISOR_DB_PORT"),
     },
 }
 

@@ -28,6 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['advisor-api.herokuapp.com', '127.0.0.1', 'localhost']
 
+from dotenv import load_dotenv
+load_dotenv()
 
 # Okta Configuration
 ORG_URL = os.environ.get("ORG_URL")
@@ -96,8 +98,12 @@ WSGI_APPLICATION = 'advisor_api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get("ADVISOR_DB_NAME"),
+        'USER': os.environ.get("ADVISOR_DB_USER"),
+        'PASSWORD': os.environ.get("ADVISOR_DB_PW"),
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 

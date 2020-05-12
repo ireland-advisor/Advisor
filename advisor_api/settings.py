@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import sys
 
 # import markdown
 # print('Markdown module path', markdown.__file__)
@@ -29,6 +30,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['advisor-api.herokuapp.com', '127.0.0.1', 'localhost']
 
 from dotenv import load_dotenv
+
 load_dotenv()
 
 # Okta Configuration
@@ -99,13 +101,23 @@ WSGI_APPLICATION = 'advisor_api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get("ADVISOR_DB_NAME"),
+        'NAME': 'advisor_db',
         'USER': os.environ.get("ADVISOR_DB_USER"),
         'PASSWORD': os.environ.get("ADVISOR_DB_PW"),
         'HOST': 'localhost',
         'PORT': '',
-    }
+    },
 }
+
+if 'test' in sys.argv:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'postgres',
+        'USER': 'advisor_tester',
+        'PASSWORD': 'advisor_tester',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

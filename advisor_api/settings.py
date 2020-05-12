@@ -101,7 +101,7 @@ WSGI_APPLICATION = 'advisor_api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'advisor_db',
+        'NAME': os.environ.get("ADVISOR_DB_NAME"),
         'USER': os.environ.get("ADVISOR_DB_USER"),
         'PASSWORD': os.environ.get("ADVISOR_DB_PW"),
         'HOST': 'localhost',

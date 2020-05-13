@@ -42,7 +42,7 @@ class PublicUserApiTest(TestCase):
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         self.assertJSONEqual(
             str(res.content, encoding='utf8'),
-            {'user_id': 1}
+            {'user_id': 12}
         )
 
     def test_user_exits(self):

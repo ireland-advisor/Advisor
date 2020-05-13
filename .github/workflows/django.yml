@@ -37,10 +37,6 @@ jobs:
       - name: Install dependencies
         run: |
           pipenv install --dev
-      - name: Run migrations
-        run: |
-          pipenv run python manage.py makemigrations core
-          pipenv run python manage.py migrate
       - name: Run Tests
         env:
           DATABASE_URL: 'postgres://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres'

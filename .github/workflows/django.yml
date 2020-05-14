@@ -39,6 +39,6 @@ jobs:
           pipenv install --dev
       - name: Run Tests
         env:
-          DATABASE_URL: 'postgres://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres'
+          DATABASE_URL: 'postgres://advisor_tester:advisor_tester@localhost:${{ job.services.postgres.ports[5432] }}/postgres'
         run: |
           pipenv run python manage.py test

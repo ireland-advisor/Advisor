@@ -18,6 +18,8 @@ gunicorn = "*"
 okta = "*"
 okta-jwt = "*"
 flake8 = "*"
+psycopg2-binary = "*"
+python-dotenv = "*"
 
 [requires]
 python_version = "3.8"

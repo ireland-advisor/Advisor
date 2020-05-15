@@ -45,7 +45,8 @@ class PrivateProfileApiTests(TestCase):
         self.client = APIClient()
         self.user = get_user_model().objects.create_user(
             email='test@gmail.com',
-            name='testpass'
+            first_name='testpass',
+            last_name='testpass'
         )
         self.client.force_authenticate(self.user)
 

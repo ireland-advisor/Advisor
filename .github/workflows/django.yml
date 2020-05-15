@@ -16,8 +16,8 @@ jobs:
       postgres:
         image: postgres:11
         env:
-          POSTGRES_USER: advisor_tester
-          POSTGRES_PASSWORD: advisor_tester
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
           POSTGRES_DB: postgres
         ports: ['5432:5432']
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
@@ -39,6 +39,6 @@ jobs:
           pipenv install --dev
       - name: Run Tests
         env:
-          DATABASE_URL: 'postgres://advisor_tester:advisor_tester@localhost:${{ job.services.postgres.ports[5432] }}/postgres'
+          DATABASE_URL: 'postgres://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres'
         run: |
           pipenv run python manage.py test

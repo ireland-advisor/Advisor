@@ -70,10 +70,13 @@ class PrivateProfileApiTests(TestCase):
 
         res = self.client.get(PROFILES_URL)
 
-        profiles = Profile.objects.all()
+        profiles = Profile.objects.all().order_by('-id')
         serializer = ProfileSerializer(profiles, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(res.data["results"], serializer.data)
+        self.assertEqual(len(res.data["results"]), 2)
+        self.assertIn(res.data["results"][0], serializer.data)
+        self.assertIn(res.data["results"][1], serializer.data)
+
 
     def test_view_profile_detail(self):
         """Test viewing a profile detail"""

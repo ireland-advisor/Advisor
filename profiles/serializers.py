@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models import MentoringTags, SeekingTags
+from core.models import MentoringTags, SeekingTags, Profile
 
 class SeekingTagSerializer(serializers.ModelSerializer):
     """Serializer for seeker object"""
@@ -18,37 +18,29 @@ class MentorTagSerializer(serializers.ModelSerializer):
         fields = ('id', 'name')
         read_only_fields = ('id',)
 
-# class ProfileSerializer(serializers.ModelSerializer):
-#     # filed in source= reflects to the database,
-#     # field in left variable reflects to the json fields
-#     # you have to be very careful about the name standards
-#     gender_read = serializers.CharField(source='get_gender_display',
-#                                         required=False,
-#                                         read_only=True)
-#     gender = serializers.CharField(write_only=True, required=False)
-#     # read only
-#     icon = serializers.SerializerMethodField(source='get_icon')
-#     user_id = serializers.CharField(read_only=False,
-#                                     required=True,
-#                                     error_messages={"required": "please include user_id"})
-#
-#     # this def work with SerializerMethodField to add customized field
-#     def get_icon(self, row):
-#         return row.icon_url
-#
-#     class Meta:
-#         model = Profile
-#         fields = (
-#             'user',
-#             'user_id',
-#             'icon',
-#             'tags',
-#             'gender_read',
-#             'gender',
-#             'personal_des',
-#             'birthday',
-#             'mentoring_fields',
-#             'seeking_fields',
-#             'isAvailable',
-#         )
-#         depth = 1
+
+class ProfileSerializer(serializers.ModelSerializer):
+    """Serialize a profile"""
+    seeking_tags = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=SeekingTags.objects.all(),
+        required=False
+    )
+    mentoring_tags = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=MentoringTags.objects.all(),
+        required=False
+    )
+
+    class Meta:
+        model = Profile
+        fields = (
+            'id', 'title', 'gender', 'seeking_tags', 'mentoring_tags', 'personal_des', 'birthday',
+            'is_available',
+        )
+        read_only_Fields = (id,)
+
+
+class ProfileDetailSerializer(ProfileSerializer):
+    seeking_tags = SeekingTagSerializer(many=True, read_only=True)
+    mentoring_tags = MentorTagSerializer(many=True, read_only=True)

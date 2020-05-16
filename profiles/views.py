@@ -1,6 +1,7 @@
-from rest_framework import viewsets, mixins, status
-from rest_framework.response import Response
+from rest_framework import viewsets, mixins
+from rest_framework.permissions import IsAuthenticated
 
+from core.authentication import OktaAuthentication
 from core.models import MentoringTags, SeekingTags, Profile
 
 from profiles import serializers
@@ -10,6 +11,8 @@ class BaseTagAttrViewSet(viewsets.GenericViewSet,
                          mixins.ListModelMixin,
                          mixins.CreateModelMixin):
     """Base viewset for user owned recipe attributes"""
+    authentication_classes = (OktaAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         """Return objects for the current authenticated user only"""
@@ -36,10 +39,12 @@ class ProfileViewSet(viewsets.ModelViewSet):
     """Manage profiles in the database"""
     serializer_class = serializers.ProfileSerializer
     queryset = Profile.objects.all()
+    authentication_classes = (OktaAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
-    # def get_queryset(self):
-    #     """Retrieve the profiles for the authenticated user"""
-    #     return self.queryset.filter(user=self.request.user)
+    def get_queryset(self):
+        """Retrieve the profiles for the authenticated user"""
+        return self.queryset.filter(user=self.request.user)
 
     def get_serializer_class(self):
         """Return appropriate serializer class

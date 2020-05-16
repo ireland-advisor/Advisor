@@ -14,14 +14,13 @@ class OktaAuthentication(authentication.BaseAuthentication):
         access_token = request.META.get('HTTP_AUTHORIZATION')
         if not access_token:
             return None
-        access_token = generate_token(config.issuer, config.client_id, config.client_secret, "lee@gmail.com",
-                                      "Advisor2020")
-        print(access_token)
+        # access_token = generate_token(config.issuer, config.client_id, config.client_secret, "leebusiness197@gmail.com",
+        #                               "Advisor2020")
+        # print(access_token)
         payload = validate_token(access_token, config.issuer, config.aud, config.client_id)
 
         try:
             user = get_user_model().objects.get(email=payload['sub'])
-            breakpoint()
 
         except User.DoesNotExist:
             raise exceptions.AuthenticationFailed('No such user')

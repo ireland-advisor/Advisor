@@ -38,6 +38,19 @@ def sample_profile(user, **params):
     return Profile.objects.create(user=user, **defaults)
 
 
+class PublicProfilesApiTests(TestCase):
+    """Test unauthenticated profile API access"""
+
+    def setUp(self):
+        self.client = APIClient()
+
+    def test_required_auth(self):
+        """Test the authenticaiton is required"""
+        res = self.client.get(PROFILES_URL)
+
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+
 class PrivateProfileApiTests(TestCase):
     """Test authenticated profile API access"""
 
@@ -115,4 +128,3 @@ class PrivateProfileApiTests(TestCase):
         tags = profile.mentoring_tags.all()
         self.assertEqual(len(tags), 1)
         self.assertIn(new_tag, tags)
-

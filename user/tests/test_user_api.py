@@ -27,14 +27,15 @@ class PublicUserApiTest(TestCase):
         """test creating user with valid payload is successful"""
         client_instance = mock_user_client.return_value
         user_instance = mock_user.return_value
-        user_instance.id = 1
+        user_instance.id = "OKTAUSERIDHAHAHAHA"
         client_instance.create_user.return_value = user_instance
 
         email_head = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(15))
 
         payload = {'email': email_head + '@gmail.com',
                    'first_name': 'fisrt name',
-                   'last_name': 'last name'
+                   'last_name': 'last name',
+                   'password': 'testpw'
                    }
 
         res = self.client.post(CREATE_USER_URL, payload)
@@ -42,14 +43,15 @@ class PublicUserApiTest(TestCase):
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         self.assertJSONEqual(
             str(res.content, encoding='utf8'),
-            {'user_id': 23}
+            {'result': {'okta_user_id': 'OKTAUSERIDHAHAHAHA'}}
         )
 
     def test_user_exits(self):
         """"test that user already exits failed"""
         payload = {'email': 'lee@gmail.com',
                    'first_name': 'Test',
-                   'last_name': 'Test'}
+                   'last_name': 'Test',
+                   'password': 'password'}
         create_user(**payload)
 
         res = self.client.post(CREATE_USER_URL, payload)

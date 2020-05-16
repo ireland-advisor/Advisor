@@ -3,6 +3,7 @@ from okta import UsersClient
 from okta.models.user import User
 from rest_framework import generics
 
+from core.authentication import OktaAuthentication
 from core.models import Config
 from user.serializers import UserSerializer
 
@@ -14,6 +15,7 @@ config = Config()
 class CreateUserView(generics.CreateAPIView):
     """Create a new user in the system"""
     serializer_class = UserSerializer
+    authentication_classes = (OktaAuthentication,)
 
     def post(self, request, *args, **kwargs):
         serializer = UserSerializer(data=request.data)
@@ -25,15 +27,9 @@ class CreateUserView(generics.CreateAPIView):
                              lastName=serializer.data['last_name']
                              )
             try:
-                okta_user_id = users_client.create_user(okta_user, activate=False).id
-                if okta_user_id is not None:
-                    user = get_user_model().objects.create_user(
-                        email=serializer.data['email'],
-                        first_name=serializer.data['first_name'],
-                        last_name=serializer.data['last_name'],
-                        okta_id=okta_user_id
-                    )
-                    return JsonResponse({"user_id": user.id}, status=201)
+                users_client.create_user(okta_user, activate=False)
+                user = serializer.save()
+                return JsonResponse({"user_id": user.id}, status=201)
 
             except Exception as e:
                 return e.args[0]

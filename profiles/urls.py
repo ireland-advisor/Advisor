@@ -6,6 +6,7 @@ from profiles import views
 router = DefaultRouter()
 router.register('mentor_tags', views.MentorTagsViewSet)
 router.register('seeker_tags', views.SeekerTagsViewSet)
+router.register('profiles', views.ProfileViewSet)
 
 app_name = 'profile'
 

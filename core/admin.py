@@ -36,3 +36,4 @@ class UserAdmin(BaseUserAdmin):
 admin.site.register(models.User, UserAdmin)
 admin.site.register(MentoringTags)
 admin.site.register(SeekingTags)
+admin.site.register(models.Profile)

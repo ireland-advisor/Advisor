@@ -20,6 +20,7 @@ okta-jwt = "*"
 flake8 = "*"
 psycopg2-binary = "*"
 python-dotenv = "*"
+django-cors-headers = "*"
 
 [requires]
 python_version = "3.8"

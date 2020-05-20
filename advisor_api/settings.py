@@ -44,7 +44,6 @@ TOKEN = os.environ.get("TOKEN")
 AUD = os.environ.get("AUD")
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

@@ -11,6 +11,11 @@ from rest_framework import status
 CREATE_USER_URL = reverse('user:create')
 
 
+def activate_url():
+    """Return profile detail URL"""
+    return "%s?okta_id=test" % reverse('user:activate')
+
+
 def create_user(**params):
     return get_user_model().objects.create_user(**params)
 
@@ -21,14 +26,12 @@ class PublicUserApiTest(TestCase):
     def setUp(self) -> None:
         self.client = APIClient()
 
-    @patch('user.views.UsersClient')
-    @patch('user.views.User')
-    def test_create_valid_user_success(self, mock_user, mock_user_client):
+    @patch('user.views.send_email')
+    @patch('user.views.create_okta_user')
+    def test_create_valid_user_success(self, create_okta_user_metod, send_email_method):
         """test creating user with valid payload is successful"""
-        client_instance = mock_user_client.return_value
-        user_instance = mock_user.return_value
-        user_instance.id = "OKTAUSERIDHAHAHAHA"
-        client_instance.create_user.return_value = user_instance
+
+        create_okta_user_metod.return_value = "OKTAUSERIDHAHAHAHA"
 
         email_head = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(15))
 
@@ -57,3 +60,25 @@ class PublicUserApiTest(TestCase):
         res = self.client.post(CREATE_USER_URL, payload)
 
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    @patch('user.views.activate_okta_user')
+    def test_activate_user_successfully(self, patch_method):
+        patch_method.return_value = 0
+        url = activate_url()
+        res = self.client.get(url)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertJSONEqual(
+            str(res.content, encoding='utf8'),
+            {'result': {'activated_user_id': 0}}
+        )
+
+    @patch('user.views.activate_okta_user')
+    def test_activate_user_fail(self, patch_method):
+        patch_method.side_effect = Exception("wrong")
+        url = activate_url()
+        res = self.client.get(url)
+
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+

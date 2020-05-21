@@ -118,7 +118,7 @@ if 'test' in sys.argv:
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'advisor_db_test',
         'USER': 'postgres',
-        'PASSWORD': 'lee12345',
+        'PASSWORD': 'postgres',
         'HOST': 'localhost',
         'PORT': '',
     }

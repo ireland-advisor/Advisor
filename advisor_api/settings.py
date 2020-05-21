@@ -44,7 +44,6 @@ TOKEN = os.environ.get("TOKEN")
 AUD = os.environ.get("AUD")
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -117,7 +116,7 @@ DATABASES = {
 if 'test' in sys.argv:
     DATABASES['default'] = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
+        'NAME': 'advisor_db_test',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': 'localhost',

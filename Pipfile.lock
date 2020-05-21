@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "12344f004446285e24bdf942cbc186b938f3c426363cdb3b3e9fe686bf23aea1"
+            "sha256": "1b837d898ebe332a38f8735bae8c90d048e3031916b98d5cb1ded60ba5159c9b"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -61,11 +61,11 @@
         },
         "django-cors-headers": {
             "hashes": [
-                "sha256:a5960addecc04527ab26617e51b8ed42f0adab4594b24bb0f3c33e2bd3857c3f",
-                "sha256:a785b5f446f6635810776d9f5f5d23e6a2a2f728ea982648370afaf0dfdf2627"
+                "sha256:48d267c10d11d8e17805bf896071c0a3e8efb6f79f6634a90e6faac4c2f8a1a0",
+                "sha256:73d654950b5f5e7e4f67c05183d2169d4f7518ceb87734eb0d68f9e43be59f1c"
             ],
             "index": "pypi",
-            "version": "==3.2.1"
+            "version": "==3.3.0"
         },
         "django-extensions": {
             "hashes": [
@@ -203,10 +203,10 @@
         },
         "packaging": {
             "hashes": [
-                "sha256:3c292b474fda1671ec57d46d739d072bfd495a4f51ad01a055121d81e952b7a3",
-                "sha256:82f77b9bee21c1bafbf35a84905d604d5d1223801d639cf3ed140bd651c08752"
+                "sha256:4357f74f47b9c12db93624a82154e9b120fa8293699949152b22065d556079f8",
+                "sha256:998416ba6962ae7fbd6596850b80e17859a5753ba17c32284f67bfff33784181"
             ],
-            "version": "==20.3"
+            "version": "==20.4"
         },
         "psycopg2-binary": {
             "hashes": [
@@ -310,6 +310,12 @@
             "index": "pypi",
             "version": "==0.13.0"
         },
+        "python-http-client": {
+            "hashes": [
+                "sha256:93d6a26b426e48b04e589c1f103e7c040193e4ccc379ea50cd6e12f94cca7c69"
+            ],
+            "version": "==3.2.7"
+        },
         "python-jose": {
             "hashes": [
                 "sha256:1ac4caf4bfebd5a70cf5bd82702ed850db69b0b6e1d0ae7368e5f99ac01c9571",
@@ -370,6 +376,14 @@
             ],
             "markers": "platform_python_implementation == 'CPython' and python_version < '3.9'",
             "version": "==0.2.0"
+        },
+        "sendgrid": {
+            "hashes": [
+                "sha256:38c0853494c7bfbef64f33934c25bf98bb7648cf0e66a0cfb22410927e4ef4c7",
+                "sha256:838e1f7b0f84d56714be6a18ef66fbcf8fba0bda782eee35c47c04d7a16efde8"
+            ],
+            "index": "pypi",
+            "version": "==6.3.1"
         },
         "six": {
             "hashes": [

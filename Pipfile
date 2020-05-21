@@ -21,6 +21,7 @@ flake8 = "*"
 psycopg2-binary = "*"
 python-dotenv = "*"
 django-cors-headers = "*"
+sendgrid = "*"
 
 [requires]
 python_version = "3.8"

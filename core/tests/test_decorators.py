@@ -19,7 +19,6 @@ class PermissionsRequiredDecoratorTest(TestCase):
 
     def setUp(self):
         self.factory = RequestFactory()
-
         self.request = self.factory.post('/rand', **{'HTTP_AUTHORIZATION': "mock_token"})
 
     def test_okta_login_called(self):
